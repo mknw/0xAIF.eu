@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+        <nav className="sticky top-0 z-50 w-full flex justify-center border-b border-b-foreground/10 h-16 bg-black/50 backdrop-blur-lg">
           <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
             <div className="flex items-center gap-6">
               <Link href="/" className="hover:text-gray-300 transition-colors">Home</Link>

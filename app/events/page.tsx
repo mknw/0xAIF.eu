@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import EventCard from '@/components/EventCard'
+import EventList from '@/components/EventList'
 import Link from 'next/link'
 
 export default async function EventsPage() {
@@ -34,11 +34,7 @@ export default async function EventsPage() {
           </Link>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} userId={user?.id} />
-        ))}
-      </div>
+      <EventList events={events} userId={user?.id} />
     </div>
   )
 }
