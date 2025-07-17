@@ -1,0 +1,30 @@
+.mouse-icon {
+  width: 24px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  position: relative;
+}
+
+.mouse-icon::before {
+  content: '';
+  width: 4px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 2px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll-animation 1.5s infinite;
+}
+
+@keyframes scroll-animation {
+  0% {
+    opacity: 1;
+    top: 8px;
+  }
+  100% {
+    opacity: 0;
+    top: 20px;
+  }
+}
