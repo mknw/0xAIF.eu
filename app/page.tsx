@@ -111,8 +111,8 @@ export default function Home() {
       {/* ─── Hero ─── */}
       <motion.header style={{ opacity: heroOpacity, scale: heroScale }} className="h-screen flex flex-col items-center justify-center text-center px-4 md:px-8 sticky top-0">
         <motion.div initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.2 } } }} className="relative z-10">
-          <motion.div variants={FADE_UP} className="text-gray-400 text-lg">0xA1F.eu</motion.div>
-          <motion.h1 variants={FADE_UP} className="text-4xl md:text-6xl font-bold tracking-tighter mt-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">AI Founders for Europe</motion.h1>
+          <motion.h1 variants={FADE_UP} className="text-4xl md:text-6xl font-bold tracking-tighter mt-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">0xAIF.eu</motion.h1>
+          <motion.div variants={FADE_UP} className="text-gray-400 text-lg">Technical AI Founders for Europe</motion.div>
           <motion.div variants={FADE_UP} className="mt-6 h-8 md:h-10">
             <TypeAnimation
               sequence={[
