@@ -34,7 +34,7 @@ export default async function EventsPage() {
           </Link>
         )}
       </div>
-      <EventList events={events} userId={user?.id} />
+      <EventList events={events} userId={user?.id} canCreateEvents={profile?.can_create_events ?? false} />
     </div>
   )
 }

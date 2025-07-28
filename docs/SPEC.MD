@@ -89,3 +89,42 @@ The following environment variables are required:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+
+## DB Schema
+
+```sql
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.events (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT timezone('utc'::text, now()),
+  name text NOT NULL,
+  description text,
+  event_date timestamp with time zone NOT NULL,
+  location text,
+  organizer_id uuid,
+  CONSTRAINT events_pkey PRIMARY KEY (id),
+  CONSTRAINT events_organizer_id_fkey FOREIGN KEY (organizer_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.profiles (
+  id uuid NOT NULL,
+  updated_at timestamp with time zone,
+  username text UNIQUE CHECK (char_length(username) >= 3),
+  full_name text,
+  avatar_url text,
+  website text,
+  can_create_events boolean NOT NULL DEFAULT false,
+  CONSTRAINT profiles_pkey PRIMARY KEY (id),
+  CONSTRAINT profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
+);
+CREATE TABLE public.rsvps (
+  event_id bigint NOT NULL,
+  user_id uuid NOT NULL,
+  CONSTRAINT rsvps_pkey PRIMARY KEY (event_id, user_id),
+  CONSTRAINT rsvps_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id),
+  CONSTRAINT rsvps_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+```

@@ -1,7 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
+import { Trash2 } from 'lucide-react'
+import { deleteEvent } from '@/app/events/actions'
 
 // Define the types manually for now.
 // In a real-world scenario, these would be generated from your Supabase schema.
@@ -20,13 +23,27 @@ type EventWithRsvps = {
   rsvps: Rsvp[];
 }
 
-export default function EventCard({ event, userId }: { event: EventWithRsvps, userId: string | undefined }) {
+export default function EventCard({ event, userId, canCreateEvents }: { event: EventWithRsvps, userId: string | undefined, canCreateEvents: boolean }) {
   const supabase = createClient()
   const [isRsvpd, setIsRsvpd] = useState(() => {
     if (!userId) return false
     return event.rsvps.some(rsvp => rsvp.user_id === userId)
   })
   const [loading, setLoading] = useState(false)
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+      return
+    }
+
+    setLoading(true)
+    const result = await deleteEvent(event.id)
+    if (result?.error) {
+      alert('Error deleting event: ' + result.error)
+      setLoading(false)
+    }
+    // On success, the action will revalidate and redirect, so no need to setLoading(false) here.
+  }
 
   const handleRsvp = async () => {
     if (!userId) {
@@ -70,17 +87,37 @@ export default function EventCard({ event, userId }: { event: EventWithRsvps, us
         <p className="text-gray-300 mt-4 h-24 overflow-hidden text-ellipsis">{event.description}</p>
         <div className="mt-6 flex justify-between items-center">
           <span className="text-gray-400">{event.rsvps.length} going</span>
-          <button
-            onClick={handleRsvp}
-            disabled={loading || !userId}
-            className={`px-4 py-2 rounded-md font-semibold text-white transition-colors ${
-              isRsvpd
-                ? 'bg-red-600 hover:bg-red-700'
-                : 'bg-indigo-600 hover:bg-indigo-700'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-          >
-            {loading ? '...' : isRsvpd ? 'Cancel RSVP' : 'RSVP'}
-          </button>
+          <div className="flex items-center gap-2">
+            {userId && canCreateEvents && (
+              <>
+                <Link
+                  href={`/events/${event.id}/edit`}
+                  className="px-4 py-2 rounded-md font-semibold text-white bg-gray-600 hover:bg-gray-700 transition-colors"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  disabled={loading}
+                  className="p-2 rounded-md font-semibold text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50"
+                  aria-label="Delete event"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </>
+            )}
+            <button
+              onClick={handleRsvp}
+              disabled={loading || !userId}
+              className={`px-4 py-2 rounded-md font-semibold text-white transition-colors ${
+                isRsvpd
+                  ? 'bg-red-600 hover:bg-red-700'
+                  : 'bg-indigo-600 hover:bg-indigo-700'
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {loading ? '...' : isRsvpd ? 'Cancel RSVP' : 'RSVP'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

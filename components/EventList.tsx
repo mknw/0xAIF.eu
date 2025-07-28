@@ -23,7 +23,7 @@ const FADE_UP_ANIMATION_VARIANTS: Variants = {
   show: { opacity: 1, y: 0, transition: { type: 'spring' } },
 }
 
-export default function EventList({ events, userId }: { events: EventWithRsvps[], userId: string | undefined }) {
+export default function EventList({ events, userId, canCreateEvents }: { events: EventWithRsvps[], userId: string | undefined, canCreateEvents: boolean }) {
   return (
     <motion.div
       initial="hidden"
@@ -41,7 +41,7 @@ export default function EventList({ events, userId }: { events: EventWithRsvps[]
     >
       {events.map((event) => (
         <motion.div key={event.id} variants={FADE_UP_ANIMATION_VARIANTS}>
-          <EventCard event={event} userId={userId} />
+          <EventCard event={event} userId={userId} canCreateEvents={canCreateEvents} />
         </motion.div>
       ))}
     </motion.div>

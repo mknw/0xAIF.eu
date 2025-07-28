@@ -2,8 +2,17 @@
 
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { createEvent } from '@/app/events/actions'
+import { updateEvent } from '@/app/events/actions'
 import { DateTimePicker } from '@/components/ui/DateTimePicker'
+
+// In a real-world scenario, this would be generated from your Supabase schema.
+type Event = {
+  id: number;
+  name: string;
+  description: string | null;
+  event_date: string;
+  location: string | null;
+}
 
 const initialState: { error: string | null } = {
   error: null,
@@ -14,17 +23,18 @@ function SubmitButton() {
 
   return (
     <button type="submit" disabled={pending} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-indigo-500 disabled:opacity-50">
-      {pending ? 'Creating Event...' : 'Create Event'}
+      {pending ? 'Updating Event...' : 'Update Event'}
     </button>
   )
 }
 
-export default function CreateEventForm() {
-  const [state, formAction] = useActionState(createEvent, initialState)
-  const [eventDate, setEventDate] = useState(new Date())
+export default function EditEventForm({ event }: { event: Event }) {
+  const [state, formAction] = useActionState(updateEvent, initialState)
+  const [eventDate, setEventDate] = useState(new Date(event.event_date))
 
   return (
     <form action={formAction} className="space-y-6">
+      <input type="hidden" name="id" value={event.id} />
       <input type="hidden" name="event_date" value={eventDate.toISOString()} />
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-300">Event Name</label>
@@ -33,6 +43,7 @@ export default function CreateEventForm() {
           name="name"
           type="text"
           required
+          defaultValue={event.name}
           className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
@@ -42,6 +53,7 @@ export default function CreateEventForm() {
           id="description"
           name="description"
           rows={4}
+          defaultValue={event.description || ''}
           className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
@@ -55,6 +67,7 @@ export default function CreateEventForm() {
           id="location"
           name="location"
           type="text"
+          defaultValue={event.location || ''}
           className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
