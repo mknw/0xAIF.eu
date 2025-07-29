@@ -9,12 +9,12 @@ import { useRouter } from 'next/navigation'
 
 // Define the types based on your table structure
 export type Event = {
-  id: string;
+  id: number;
   name: string;
-  description: string;
+  description: string | null;
   event_date: string;
   location: string | null;
-  organizer_id: string;
+  organizer_id: string | null;
   created_at: string;
 }
 
@@ -64,12 +64,12 @@ export default function EventCard({ event, userId, canCreateEvents }: { event: E
       return
     }
     setDeleting(true)
-    await deleteEvent(event.id)
+    await deleteEvent(event.id.toString()!)
     setDeleting(false)
     // The page should be refreshed by the server action's revalidatePath
   }
   
-  const handleEditClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     handleButtonClick(e);
     router.push(`/events/${event.id}/edit`);
   };
@@ -90,13 +90,12 @@ export default function EventCard({ event, userId, canCreateEvents }: { event: E
           <div className="flex items-center gap-2">
             {userId && canCreateEvents && (
               <>
-                <Link
-                  href={`/events/${event.id}/edit`}
+                <button
                   onClick={handleEditClick}
                   className="px-3 py-1.5 rounded-md text-sm font-semibold text-white bg-gray-600 hover:bg-gray-700 transition-colors"
                 >
                   Edit
-                </Link>
+                </button>
                 <button
                   onClick={handleDelete}
                   disabled={deleting}

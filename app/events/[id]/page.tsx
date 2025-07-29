@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 // import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-
+// import { useRouter } from 'next/navigation'
 // Define types for clarity
 type AttendeeProfile = {
   id: string;
@@ -13,10 +13,10 @@ type Attendee = {
   profiles: AttendeeProfile | null;
 }
 
-export default async function EventDetailPage({ params }: { params: { id: string } }) {
+export default async function EventDetailPage( {params} : {params: Promise<{ id: string }>}) {
+  const {id} = await params
   const supabase = await createClient()
 
-  const { id } = await params
 
   const { data: event, error: eventError } = await supabase
     .from('events')
@@ -25,6 +25,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
     .single()
 
   if (eventError || !event) {
+    console.log(`[Error while fetching event ${id}:`, eventError)
     notFound()
   }
 
@@ -33,6 +34,10 @@ export default async function EventDetailPage({ params }: { params: { id: string
     .select('profiles(id, full_name, avatar_url)')
     .eq('event_id', id)
 
+  if (rsvpError || !attendees) {
+    console.log(`[Error while fetching event ${id}:`, )
+    console.log(rsvpError)
+  }
   const eventDate = new Date(event.event_date)
 
   return (
