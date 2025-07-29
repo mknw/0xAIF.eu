@@ -94,7 +94,7 @@ export async function updateEvent(prevState: { error: string | null }, formData:
   redirect('/events')
 }
 
-export async function deleteEvent(eventId: number) {
+export async function deleteEvent(eventId: string) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()

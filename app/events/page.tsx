@@ -12,7 +12,7 @@ export default async function EventsPage() {
     supabase
       .from('events')
       .select(`*, rsvps(user_id)`)
-      .order('event_date', { ascending: true }),
+      .order('event_date', { ascending: false }),
     user ? supabase.from('profiles').select('can_create_events').eq('id', user.id).single() : Promise.resolve({ data: null, error: null })
   ]);
 
