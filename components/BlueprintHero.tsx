@@ -2,41 +2,70 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const blueprintConfig = {
   annotations: [
-    { from: 'Technical', to: '0x', position: { top: '-40%', left: '-20%' }, alignment: 'right' },
-    { from: 'AI', to: 'AI', position: { top: '-20%', left: '35%' }, alignment: 'center' },
-    { from: 'Founders', to: 'F', position: { top: '110%', left: '55%' }, alignment: 'left' },
-    { from: 'Europe', to: 'eu', position: { top: '60%', left: '110%' }, alignment: 'left' },
+    { from: 'Technical', to: '0x', position: { top: '-171%', left: '20%' }, alignment: 'right', fromSide: 'bottom', toSide: 'top' },
+    { from: 'Artificial Inference', to: 'AI', position: { top: '-101%', left: '59%' }, alignment: 'center', fromSide: 'bottom', toSide: 'top' },
+    { from: 'Founders', to: 'F', position: { top: '180%', left: '30%' }, alignment: 'left', fromSide: 'top', toSide: 'bottom' },
+    { from: 'Europe', to: 'eu', position: { top: '100%', left: '75%' }, alignment: 'left', fromSide: 'left', toSide: 'right' },
   ],
   lineColor: 'rgba(139, 92, 246, 0.7)', // purple-500 with opacity
-  lineWidth: 1.5,
+  lineWidth: 2,
+};
+
+type Side = 'top' | 'bottom' | 'left' | 'right';
+
+const getOrthogonalPath = (fromRect: DOMRect, toRect: DOMRect, fromSide: Side, toSide: Side) => {
+  const offset = 20;
+  let p2, p3;
+  const p1 = { x: fromRect.x + fromRect.width / 2, y: fromRect.y + fromRect.height / 2 };
+  const p4 = { x: toRect.x + toRect.width / 2, y: toRect.y + toRect.height / 2 };
+
+
+
+
+
+  if (fromSide === 'top') { p1.y = fromRect.top; p2 = { x: p1.x, y: p1.y - offset }; }
+  else if (fromSide === 'bottom') { p1.y = fromRect.bottom; p2 = { x: p1.x, y: p1.y + offset }; }
+  else if (fromSide === 'left') { p1.x = fromRect.left; p2 = { x: p1.x - offset, y: p1.y }; }
+  else { p1.x = fromRect.right; p2 = { x: p1.x + offset, y: p1.y }; } // right
+
+  if (toSide === 'top') { p4.y = toRect.top; p3 = { x: p4.x, y: p4.y - offset }; }
+  else if (toSide === 'bottom') { p4.y = toRect.bottom; p3 = { x: p4.x, y: p4.y + offset }; }
+  else if (toSide === 'left') { p4.x = toRect.left; p3 = { x: p4.x - offset, y: p4.y }; }
+  else { p4.x = toRect.right; p3 = { x: p4.x + offset, y: p4.y }; } // right
+
+  // Path construction: M -> L -> L -> L
+  return `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y} L ${p3.x} ${p3.y} L ${p4.x} ${p4.y}`;
 };
 
 const BlueprintHero = () => {
-  const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({});
+    const [rects, setRects] = useState<Record<string, DOMRect>>({});
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const measurePositions = () => {
       if (!containerRef.current) return;
       const containerRect = containerRef.current.getBoundingClientRect();
-      const newPositions: Record<string, { x: number; y: number }> = {};
+      const newRects: Record<string, DOMRect> = {};
       
       containerRef.current.querySelectorAll('[data-title-id], [data-from-id]').forEach(el => {
         const id = (el as HTMLElement).dataset.titleId || (el as HTMLElement).dataset.fromId;
         if (id) {
           const rect = el.getBoundingClientRect();
-          newPositions[id] = {
-            x: rect.left - containerRect.left + rect.width / 2,
-            y: rect.top - containerRect.top + rect.height / 2,
-          };
+          // Store rect relative to the container
+          newRects[id] = new DOMRect(
+            rect.left - containerRect.left,
+            rect.top - containerRect.top,
+            rect.width,
+            rect.height
+          );
         }
       });
-      setPositions(newPositions);
+      setRects(newRects);
     };
 
     // Initial measurement after a short delay to allow for rendering
     const timeoutId = setTimeout(measurePositions, 100);
-    
+
     // Remeasure on window resize
     window.addEventListener('resize', measurePositions);
 
@@ -73,8 +102,7 @@ const BlueprintHero = () => {
                 textAlign: anno.alignment as 'left' | 'right' | 'center',
               }}
             >
-              <div className="text-purple-300/80 text-sm md:text-base whitespace-nowrap">{anno.from}</div>
-              {anno.from === 'AI' && <div className="text-purple-400/60 text-xs md:text-sm">(Artificial Inference)</div>}
+              <div className="text-purple-300/80 text-lg md:text-xl whitespace-nowrap">{anno.from}</div>
             </div>
           ))}
         </div>
@@ -90,32 +118,28 @@ const BlueprintHero = () => {
               textAlign: anno.alignment as 'left' | 'right' | 'center',
             }}
           >
-            <div className="text-purple-300/80 text-sm md:text-base whitespace-nowrap">{anno.from}</div>
-            {anno.from === 'AI' && <div className="text-purple-400/60 text-xs md:text-sm">(Artificial Inference)</div>}
+            <div className="text-purple-300/80 text-lg md:text-xl whitespace-nowrap">{anno.from}</div>
           </div>
         ))}
 
         {/* SVG Lines */}
         <svg className="absolute inset-0 w-full h-full overflow-visible">
           <defs>
-            <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5">
-              <circle cx="5" cy="5" r="2.5" fill={blueprintConfig.lineColor} />
-            </marker>
+
           </defs>
-          {Object.keys(positions).length > 0 && blueprintConfig.annotations.map(anno => {
-            const fromPos = positions[anno.from];
-            const toPos = positions[anno.to];
-            if (!fromPos || !toPos) return null;
+          {Object.keys(rects).length > 0 && blueprintConfig.annotations.map(anno => {
+            const fromRect = rects[anno.from];
+            const toRect = rects[anno.to];
+            if (!fromRect || !toRect) return null;
 
             return (
               <path
                 key={`line-${anno.from}`}
-                d={`M ${fromPos.x} ${fromPos.y} L ${toPos.x} ${toPos.y}`}
+                d={getOrthogonalPath(fromRect, toRect, anno.fromSide as Side, anno.toSide as Side)}
                 stroke={blueprintConfig.lineColor}
                 strokeWidth={blueprintConfig.lineWidth}
                 fill="none"
                 strokeDasharray="4 4"
-                markerEnd="url(#dot)"
               />
             );
           })}

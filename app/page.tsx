@@ -25,10 +25,12 @@ import {
   useMotionValueEvent,
   MotionValue,
 } from 'framer-motion'
-import { TypeAnimation } from 'react-type-animation'
-import { Terminal, MessagesSquare, Calendar, BrainCircuit, Briefcase, HeartHandshake, Check } from 'lucide-react'
+import { Terminal, MessagesSquare, Calendar, BrainCircuit, Briefcase, HeartHandshake } from 'lucide-react'
 import { useRef } from 'react'
-import BlueprintHero from '../components/BlueprintHero'
+import dynamic from 'next/dynamic'
+
+const BlueprintHero = dynamic(() => import('../components/BlueprintHero'), { ssr: false })
+const FeatureItem = dynamic(() => import('../components/FeatureItem'), { ssr: false })
 import './animations.css'
 
 /* ——————————————————  small reusable bits  —————————————————— */
@@ -43,14 +45,7 @@ const SectionCard = ({ title, children }: { title: string; children: React.React
     <div className="text-gray-300 space-y-3">{children}</div>
   </div>
 )
-const FeatureItem = ({ icon: Icon, children }: { icon: React.ElementType, children: React.ReactNode }) => (
-  <li className="flex items-start gap-4">
-    <div className="w-8 h-8 flex-shrink-0 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center mt-1">
-      <Icon className="w-5 h-5 text-white" />
-    </div>
-    <span className="pt-0.5">{children}</span>
-  </li>
-)
+
 
 const SENTENCES = [
   'A community for those who code, research, and launch the next generation of AI solutions—side by side.',
@@ -143,12 +138,12 @@ export default function Home() {
         <motion.section variants={FADE_UP} className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-10">Community Features</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 max-w-4xl mx-auto text-left text-lg text-gray-300">
-            <FeatureItem icon={Terminal}><strong>Live coding sessions</strong> — Pair‑programming, workshops, build‑alongs.</FeatureItem>
-            <FeatureItem icon={MessagesSquare}><strong>Technical discussions & resource sharing</strong> — Real architectures, open source, debugging help.</FeatureItem>
-            <FeatureItem icon={Calendar}><strong>Community events</strong> — Meetups, demo days, founder circles.</FeatureItem>
-            <FeatureItem icon={BrainCircuit}><strong>Open to AI‑curious domain experts</strong> — If you have a real problem, you’re welcome.</FeatureItem>
-            <FeatureItem icon={Briefcase}><strong>Opportunity board</strong> <em>(coming soon)</em></FeatureItem>
-            <FeatureItem icon={HeartHandshake}><strong>Partnered matchmaking</strong> <em>(coming soon)</em></FeatureItem>
+            <FeatureItem iconName="Terminal"><strong>Live coding sessions</strong> — Pair‑programming, workshops, build‑alongs.</FeatureItem>
+            <FeatureItem iconName="MessagesSquare"><strong>Technical discussions & resource sharing</strong> — Real architectures, open source, debugging help.</FeatureItem>
+            <FeatureItem iconName="Calendar"><strong>Community events</strong> — Meetups, demo days, founder circles.</FeatureItem>
+            <FeatureItem iconName="BrainCircuit"><strong>Open to AI‑curious domain experts</strong> — If you have a real problem, you’re welcome.</FeatureItem>
+            <FeatureItem iconName="Briefcase"><strong>Opportunity board</strong> <em>(coming soon)</em></FeatureItem>
+            <FeatureItem iconName="HeartHandshake"><strong>Partnered matchmaking</strong> <em>(coming soon)</em></FeatureItem>
           </ul>
         </motion.section>
 
