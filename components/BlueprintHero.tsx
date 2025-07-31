@@ -9,7 +9,7 @@ const blueprintConfig = {
       alignment: 'right', 
       fromSide: 'bottom', 
       toSide: 'top',
-      color: 'text-white/90' // Matches 0x color
+      color: 'text-gray-300' // Matches 0x color
     },
     { 
       from: 'Artificial Inference', 
@@ -40,7 +40,7 @@ const blueprintConfig = {
     { 
       from: 'Europe', 
       to: 'eu', 
-      position: { top: '100%', left: '75%' }, 
+      position: { top: '100%', left: '81%' }, 
       alignment: 'left', 
       fromSide: 'left', 
       toSide: 'right',
@@ -66,7 +66,7 @@ const getCurvedPath = (fromRect: DOMRect, toRect: DOMRect) => {
   return `M ${start.x} ${start.y} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${end.x} ${end.y}`;
 };
 
-const getOrthogonalPath = (fromRect: DOMRect, toRect: DOMRect, fromSide: Side, toSide: Side) => {
+const getOrthogonalPath = (fromRect: DOMRect, toRect: DOMRect, fromSide: Side, toSide: Side, rects: Record<string, DOMRect>) => {
   const offset = 20;
   const p1 = { x: 0, y: 0 };
   const p4 = { x: 0, y: 0 };
@@ -78,10 +78,15 @@ const getOrthogonalPath = (fromRect: DOMRect, toRect: DOMRect, fromSide: Side, t
   else { p1.x = fromRect.right; p1.y = fromRect.top + fromRect.height / 2; } // right
 
   // Determine end point (p4)
+  const isEuAnnotation = toRect === rects['eu'];
   if (toSide === 'top') { p4.x = toRect.left + toRect.width / 2; p4.y = toRect.top; }
   else if (toSide === 'bottom') { p4.x = toRect.left + toRect.width / 2; p4.y = toRect.bottom; }
   else if (toSide === 'left') { p4.x = toRect.left; p4.y = toRect.top + toRect.height / 2; }
-  else { p4.x = toRect.right; p4.y = toRect.top + toRect.height / 2; } // right
+  else { 
+    // Add extra space for the 'eu' annotation to ensure the arrow points to the right of the 'u'
+    p4.x = toRect.right + (isEuAnnotation ? 30 : 0); 
+    p4.y = toRect.top + toRect.height / 2; 
+  } // right
 
   let p2, p3;
   if (fromSide === 'left' || fromSide === 'right') {
@@ -157,8 +162,8 @@ const BlueprintHero = () => {
         }
       `}</style>
       {/* Layer 1: Visible Title */}
-      <h1 className="relative z-10 font-bold text-5xl md:text-7xl lg:text-8xl tracking-tighter">
-        <span className="text-white/90">0x</span>
+      <h1 className="relative z-10 font-mono font-bold text-5xl md:text-7xl lg:text-8xl tracking-tighter">
+        <span className="text-gray-300">0x</span>
         <span className="inline-block relative group">
           <span className="relative z-10 text-transparent bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-500 bg-clip-text">
             AI
@@ -169,7 +174,7 @@ const BlueprintHero = () => {
           <span className="absolute inset-0 bg-white/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         </span>
         <span className="text-white/90">F</span>
-        <span className="text-white/70">.</span>
+        <span className="text-white/40 font-sans">.</span>
         <span className="bg-gradient-to-tr from-blue-500 via-blue-400 to-yellow-300 bg-clip-text text-transparent">eu</span>
       </h1>
 
@@ -242,7 +247,7 @@ const BlueprintHero = () => {
 
             const pathData = isMobile
               ? getCurvedPath(fromRect, toRect)
-              : getOrthogonalPath(fromRect, toRect, anno.fromSide as Side, anno.toSide as Side);
+              : getOrthogonalPath(fromRect, toRect, anno.fromSide as Side, anno.toSide as Side, rects);
 
             return (
               <path
