@@ -28,7 +28,7 @@ import {
 import { Terminal, MessagesSquare, Calendar, BrainCircuit, Briefcase, HeartHandshake } from 'lucide-react'
 import { useRef } from 'react'
 import dynamic from 'next/dynamic'
-import TypeAnimation from 'react-type-animation'
+import {TypeAnimation} from 'react-type-animation'
 
 const BlueprintHero = dynamic(() => import('../components/BlueprintHero'), { ssr: false })
 import './animations.css'
