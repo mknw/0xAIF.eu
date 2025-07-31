@@ -41,13 +41,13 @@ const FADE_UP: Variants = {
 
 const SectionCard = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="bg-gray-800/30 backdrop-blur-md border border-gray-700 rounded-lg p-6 h-full">
-    <h3 className="text-2xl font-bold text-indigo-400 mb-4">{title}</h3>
+    <h3 className="text-2xl font-bold text-cyan-400 mb-4">{title}</h3>
     <div className="text-gray-300 space-y-3">{children}</div>
   </div>
 )
 const FeatureItem = ({ icon: Icon, children }: { icon: React.ElementType, children: React.ReactNode }) => (
   <li className="flex items-start gap-4">
-    <div className="w-8 h-8 flex-shrink-0 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center mt-1">
+    <div className="w-8 h-8 flex-shrink-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mt-1">
       <Icon className="w-5 h-5 text-white" />
     </div>
     <span className="pt-0.5">{children}</span>
@@ -110,32 +110,36 @@ export default function Home() {
       {/* ─── Hero ─── */}
       <header className="h-screen flex flex-col items-center justify-center text-center px-4 md:px-8">
         <BlueprintHero />
-
-        <motion.div variants={FADE_UP} className="mt-6 h-8 md:h-10">
-            <TypeAnimation
-              sequence={[
-                '> Coding sessions_', 1500,
-                '> Debugging together_', 1500,
-                '> Solving for reality_', 1500,
-                '> Collaborating across Europe_', 1500,
-              ]}
-              wrapper="span"
-              speed={50}
-              className="text-xl md:text-2xl text-green-400 font-mono"
-              repeat={Infinity}
-            />
-          </motion.div>
-
+        
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-400 flex flex-col items-center gap-2 pointer-events-none">
           <span>Scroll</span>
           <div className="mouse-icon" />
         </div>
-        {/* decorative blobs */}
-        <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
-          <div className="absolute left-[-20%] top-[-30%] h-[550px] w-[550px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,255,.15),transparent)]" />
-          <div className="absolute right-[-15%] bottom-[-20%] h-[550px] w-[550px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(0,255,255,.15),transparent)]" />
-        </div>
+
+        <motion.div 
+          variants={FADE_UP} 
+          className="absolute bottom-48 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4"
+        >
+          <TypeAnimation
+            sequence={[
+              '> Coding sessions_', 1500,
+              '> Debugging together_', 1500,
+              '> Solving for reality_', 1500,
+              '> Collaborating across Europe_', 1500,
+            ]}
+            wrapper="span"
+            speed={50}
+            className="text-xl md:text-2xl text-cyan-300 font-mono inline-block"
+            repeat={Infinity}
+          />
+        </motion.div>
       </header>
+
+      {/* decorative blobs */}
+      <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none blur-3xl">
+        <div className="absolute left-[-20%] top-[-30%] h-[550px] w-[550px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(0,201,255,.2),transparent)]" />
+        <div className="absolute right-[-15%] bottom-[-20%] h-[550px] w-[550px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(0,100,255,.15),transparent)]" />
+      </div>
 
       {/* ─── Pinned Sentences ─── */}
       <div ref={pinRef} className="h-[90vh] relative">
