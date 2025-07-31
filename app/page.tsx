@@ -28,6 +28,7 @@ import {
 import { TypeAnimation } from 'react-type-animation'
 import { Terminal, MessagesSquare, Calendar, BrainCircuit, Briefcase, HeartHandshake, Check } from 'lucide-react'
 import { useRef } from 'react'
+import BlueprintHero from '../components/BlueprintHero'
 import './animations.css'
 
 /* ——————————————————  small reusable bits  —————————————————— */
@@ -82,14 +83,7 @@ function Sentence({
 
 /* ———————————————————  component  ———————————————————— */
 export default function Home() {
-  /* HERO ------------------------------------------------------------------ */
-  const rootRef = useRef(null)
-  const { scrollYProgress: rootProg } = useScroll({
-    target: rootRef,
-    offset: ['start start', 'end end'],
-  })
-  const heroOpacity = useTransform(rootProg, [0, 0.1, 0.14], [1, 1, 0])
-  const heroScale   = useTransform(rootProg, [0, 0.14], [1, 0.9])
+
 
   /* SENTENCES ------------------------------------------------------------- */
   const pinRef = useRef(null)
@@ -110,37 +104,20 @@ export default function Home() {
 
   /* RENDER ================================================================ */
   return (
-    <div ref={rootRef} className="w-full bg-black text-white overflow-x-hidden">
+    <div className="w-full bg-black text-white overflow-x-hidden">
       {/* ─── Hero ─── */}
-      <motion.header style={{ opacity: heroOpacity, scale: heroScale }} className="h-screen flex flex-col items-center justify-center text-center px-4 md:px-8 sticky top-0">
-        <motion.div initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.2 } } }} className="relative z-10">
-          <motion.h1 variants={FADE_UP} className="text-4xl md:text-6xl font-bold tracking-tighter mt-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">0xAIF.eu</motion.h1>
-          <motion.div variants={FADE_UP} className="text-gray-400 text-lg">Technical AI Founders for Europe</motion.div>
-          <motion.div variants={FADE_UP} className="mt-6 h-8 md:h-10">
-            <TypeAnimation
-              sequence={[
-                '> Coding sessions_', 1500,
-                '> Debugging together_', 1500,
-                '> Solving for reality_', 1500,
-                '> Collaborating across Europe_', 1500,
-              ]}
-              wrapper="span"
-              speed={50}
-              className="text-xl md:text-2xl text-green-400 font-mono"
-              repeat={Infinity}
-            />
-          </motion.div>
-        </motion.div>
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-400 flex flex-col items-center gap-2">
+      <header className="h-screen flex flex-col items-center justify-center text-center px-4 md:px-8">
+        <BlueprintHero />
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-400 flex flex-col items-center gap-2 pointer-events-none">
           <span>Scroll</span>
           <div className="mouse-icon" />
         </div>
         {/* decorative blobs */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="absolute -left-1/4 top-1/4 h-[450px] w-[450px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),transparent)]" />
+        <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
+          <div className="absolute left-[-20%] top-[-30%] h-[550px] w-[550px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,255,.15),transparent)]" />
           <div className="absolute right-[-15%] bottom-[-20%] h-[550px] w-[550px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(0,255,255,.15),transparent)]" />
         </div>
-      </motion.header>
+      </header>
 
       {/* ─── Pinned Sentences ─── */}
       <div ref={pinRef} className="h-[90vh] relative">
