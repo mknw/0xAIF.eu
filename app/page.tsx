@@ -26,6 +26,7 @@ import {
   MotionValue,
 } from 'framer-motion'
 import { TypeAnimation } from 'react-type-animation'
+import { Terminal, MessagesSquare, Calendar, BrainCircuit, Briefcase, HeartHandshake, Check } from 'lucide-react'
 import { useRef } from 'react'
 import './animations.css'
 
@@ -41,10 +42,12 @@ const SectionCard = ({ title, children }: { title: string; children: React.React
     <div className="text-gray-300 space-y-3">{children}</div>
   </div>
 )
-const FeatureItem = ({ children }: { children: React.ReactNode }) => (
-  <li className="flex items-start gap-3">
-    <svg className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
-    <span>{children}</span>
+const FeatureItem = ({ icon: Icon, children }: { icon: React.ElementType, children: React.ReactNode }) => (
+  <li className="flex items-start gap-4">
+    <div className="w-8 h-8 flex-shrink-0 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full flex items-center justify-center mt-1">
+      <Icon className="w-5 h-5 text-white" />
+    </div>
+    <span className="pt-0.5">{children}</span>
   </li>
 )
 
@@ -162,23 +165,24 @@ export default function Home() {
         {/* features */}
         <motion.section variants={FADE_UP} className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-10">Community Features</h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 max-w-4xl mx-auto text-left text-lg text-gray-300">
-            <FeatureItem><strong>Live coding sessions</strong> — Pair‑programming, workshops, build‑alongs.</FeatureItem>
-            <FeatureItem><strong>Technical discussions & resource sharing</strong> — Real architectures, open source, debugging help.</FeatureItem>
-            <FeatureItem><strong>Community events</strong> — Meetups, demo days, founder circles.</FeatureItem>
-            <FeatureItem><strong>Open to AI‑curious domain experts</strong> — If you have a real problem, you’re welcome.</FeatureItem>
-            <FeatureItem><strong>Opportunity board</strong> <em>(coming soon)</em></FeatureItem>
-            <FeatureItem><strong>Partnered matchmaking</strong> <em>(coming soon)</em></FeatureItem>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 max-w-4xl mx-auto text-left text-lg text-gray-300">
+            <FeatureItem icon={Terminal}><strong>Live coding sessions</strong> — Pair‑programming, workshops, build‑alongs.</FeatureItem>
+            <FeatureItem icon={MessagesSquare}><strong>Technical discussions & resource sharing</strong> — Real architectures, open source, debugging help.</FeatureItem>
+            <FeatureItem icon={Calendar}><strong>Community events</strong> — Meetups, demo days, founder circles.</FeatureItem>
+            <FeatureItem icon={BrainCircuit}><strong>Open to AI‑curious domain experts</strong> — If you have a real problem, you’re welcome.</FeatureItem>
+            <FeatureItem icon={Briefcase}><strong>Opportunity board</strong> <em>(coming soon)</em></FeatureItem>
+            <FeatureItem icon={HeartHandshake}><strong>Partnered matchmaking</strong> <em>(coming soon)</em></FeatureItem>
           </ul>
         </motion.section>
 
         {/* partners */}
         <motion.section variants={FADE_UP} className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-10">Our Partners</h2>
-          <div className="flex justify-center items-center gap-8 md:gap-12 flex-wrap text-xl font-medium text-gray-400">
-            <span>AI Community Brussels</span>
-            <span>North Star AI</span>
-            <span>Langchain Meetup Event</span>
+          <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap text-lg text-gray-300">
+            <a href="#" target="https://www.meetup.com/data-science-community-meetup/" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">AI Community Belgium</a>
+            <a href="#" target="https://www.ns2agi.com/" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">North Star AI</a>
+            {/* <a href="#" target="_blank" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">Langchain Meetup</a> */}
+            <a href="https://commonshub.brussels" target="_blank" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">Commons Hub Brussels</a>
           </div>
         </motion.section>
       </motion.main>
