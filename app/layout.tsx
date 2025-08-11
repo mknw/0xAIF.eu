@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: '0xAIF.eu - AI Community',
+  title: '0xAIF.eu - Technical AI Founders Europe',
   description: 'The online hub for technical AI practitioners.',
 }
 
