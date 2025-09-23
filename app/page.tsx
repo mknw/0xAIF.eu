@@ -110,14 +110,14 @@ export default function Home() {
       {/* ─── Hero ─── */}
       <header className="h-screen flex flex-col items-center justify-center text-center px-4 md:px-8">
         <BlueprintHero />
-        
+
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-400 flex flex-col items-center gap-2 pointer-events-none">
           <span>Scroll</span>
           <div className="mouse-icon" />
         </div>
 
-        <motion.div 
-          variants={FADE_UP} 
+        <motion.div
+          variants={FADE_UP}
           className="absolute bottom-48 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4"
         >
           <TypeAnimation
@@ -178,8 +178,8 @@ export default function Home() {
         <motion.section variants={FADE_UP} className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-10">Our Partners</h2>
           <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap text-lg text-gray-300">
-            <a href="#" target="https://www.meetup.com/data-science-community-meetup/" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">AI Community Belgium</a>
-            <a href="#" target="https://www.ns2agi.com/" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">North Star AI</a>
+            <a href="https://www.meetup.com/data-science-community-meetup/" target="_blank" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">AI Community Belgium</a>
+            <a href="https://www.ns2agi.com/" target="_blank" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">North Star AGI</a>
             {/* <a href="#" target="_blank" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">Langchain Meetup</a> */}
             <a href="https://commonshub.brussels" target="_blank" rel="noopener noreferrer" className="bg-gray-800/50 hover:bg-gray-700/70 border border-gray-700 rounded-full px-6 py-3 transition-colors">Commons Hub Brussels</a>
           </div>
