@@ -118,7 +118,7 @@ export default function Home() {
 
         <motion.div
           variants={FADE_UP}
-          className="absolute bottom-48 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4"
+          className="absolute top-20 md:top-24 lg:top-28 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 text-center"
         >
           <TypeAnimation
             sequence={[
@@ -129,7 +129,7 @@ export default function Home() {
             ]}
             wrapper="span"
             speed={50}
-            className="text-xl md:text-2xl text-cyan-300 font-mono inline-block"
+            className="text-lg md:text-xl lg:text-2xl text-cyan-300 font-mono inline-block"
             repeat={Infinity}
           />
         </motion.div>
