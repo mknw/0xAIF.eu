@@ -84,6 +84,7 @@ export default function EventCard({ event, userId, canCreateEvents }: EventCardP
   const eventDate = new Date(event.event_date)
   const goingCount = event.rsvps.filter(r => !r.status || r.status === 'going').length
   const interestedCount = event.rsvps.filter(r => r.status === 'interested').length
+  const displayCount = Math.max(goingCount, event.actual_attendees || 0)
 
   return (
     <Link href={`/events/${event.id}`} className="block h-full group">
@@ -131,13 +132,10 @@ export default function EventCard({ event, userId, canCreateEvents }: EventCardP
           <div className="flex items-center gap-3 text-sm text-gray-400">
             <span className="flex items-center gap-1">
               <Users className="w-4 h-4" />
-              {goingCount} going
+              {displayCount} {displayCount === 1 ? 'attendee' : 'attendees'}
             </span>
             {interestedCount > 0 && (
               <span className="text-yellow-500">{interestedCount} interested</span>
-            )}
-            {canCreateEvents && event.actual_attendees !== null && event.actual_attendees !== undefined && (
-              <span className="text-green-400 text-xs">({event.actual_attendees} attended)</span>
             )}
           </div>
           <div className="flex items-center gap-2">

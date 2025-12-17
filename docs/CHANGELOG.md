@@ -13,6 +13,7 @@ All notable changes to 0xAIF Europe are documented in this file.
 - **Event Comments**: Authenticated users can add comments to events; users can delete their own comments
 - **Admin Attendance Tracking**: Organizers can record actual attendee counts after events (`actual_attendees` field)
 - **Bulk Events**: Created 13 weekly Monday coding sessions (Aug 11 - Nov 3, 2025) at Commons Hub Brussels
+- **Sample Attendance Data**: All 14 coding sessions populated with random attendance counts (5-25 attendees each)
 
 #### New Components
 - `RsvpStatusButtons.tsx` - Interactive going/interested/not_going button group with optimistic UI updates
