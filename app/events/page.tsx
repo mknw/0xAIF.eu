@@ -11,10 +11,17 @@ export default async function EventsPage() {
   const [eventsResult, profileResult] = await Promise.all([
     supabase
       .from('events')
-      .select(`*, rsvps(user_id)`)
-      .order('event_date', { ascending: false }),
+      .select(`
+        *,
+        rsvps(user_id, status),
+        event_category_mappings(
+          category_id,
+          event_categories(id, name, color)
+        )
+      `)
+      .order('event_date', { ascending: true }),
     user ? supabase.from('profiles').select('can_create_events').eq('id', user.id).single() : Promise.resolve({ data: null, error: null })
-  ]);
+  ])
 
   const { data: events, error } = eventsResult;
   const { data: profile } = profileResult;
